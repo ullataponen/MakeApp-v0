@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import { Button, Input } from "react-native-elements";
 import Firebase from "../config/Firebase";
+import styles from "../stylesheets/style";
 
 export default function Signup({ navigation }) {
 	const [name, setName] = useState("");
@@ -9,11 +10,15 @@ export default function Signup({ navigation }) {
 	const [password, setPassword] = useState("");
 
 	const handleSignUp = () => {
-		Firebase.auth()
-			.createUserWithEmailAndPassword(email, password)
-			.then(() => navigation.navigate("Home"))
-			.catch((error) => console.log(error));
-		console.log("Input", name, email, password);
+		!email || !password
+			? Alert.alert("Please input email and password to proceed")
+			: Firebase.auth()
+					.createUserWithEmailAndPassword(email, password)
+					.then(() => {
+						Alert.alert("You have successfully created an account.");
+						navigation.navigate("Home");
+					})
+					.catch((error) => console.log(error));
 	};
 
 	return (
@@ -41,12 +46,3 @@ export default function Signup({ navigation }) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});

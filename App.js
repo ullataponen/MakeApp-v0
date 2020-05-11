@@ -6,6 +6,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screens/Login";
 import Signup from "./screens/Signup";
 import Home from "./screens/Home";
+import AddItem from "./screens/AddItem";
+import Photo from "./screens/Camera";
 
 const RootStack = createStackNavigator();
 
@@ -34,16 +36,9 @@ export default function App() {
 						),
 					}}
 				/>
+				<RootStack.Screen name="AddItem" component={AddItem} />
+				<RootStack.Screen name="Photo" component={Photo} />
 			</RootStack.Navigator>
 		</NavigationContainer>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});

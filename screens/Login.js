@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import { StyleSheet, View, Alert } from "react-native";
 import { Button, Input } from "react-native-elements";
 import Firebase from "../config/Firebase";
+import styles from "../stylesheets/style";
 
 export default function Login({ navigation }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const handleLogin = () => {
-		Firebase.auth()
-			.signInWithEmailAndPassword(email, password)
-			.then(() => navigation.navigate("Home"))
-			.catch((error) => Alert.alert("Error", error.message));
+		setLoading(true);
+		!email || !password
+			? Alert.alert("Please input email and password")
+			: Firebase.auth()
+					.signInWithEmailAndPassword(email, password)
+					.then(() => navigation.navigate("Home"))
+					.catch((error) => Alert.alert("Error", error.message));
 	};
 
 	return (
@@ -29,7 +34,7 @@ export default function Login({ navigation }) {
 				onChangeText={(p) => setPassword(p)}
 				secureTextEntry={true}
 			/>
-			<Button title="LOGIN" raised onPress={handleLogin} />
+			<Button title="LOGIN" raised onPress={handleLogin} loading={loading} />
 
 			<Button
 				title="Don't have an account yet? Sign up"
@@ -39,13 +44,3 @@ export default function Login({ navigation }) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-		fontFamily: "Helvetica",
-	},
-});

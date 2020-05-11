@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import { View, StyleSheet, Alert, FlatList } from "react-native";
 import { Input, Button, ListItem } from "react-native-elements";
 import Firebase from "../config/Firebase";
+import styles from "../stylesheets/style";
 
 export default function Home({ navigation }) {
 	const [brand, setBrand] = useState("");
 	const [prodType, setProdType] = useState("");
 	const [products, setProducts] = useState([]);
-	// const { user } = route.params;
-	// console.log(user);
+	const userId = Firebase.auth().currentUser;
+
+	if (userId) {
+		console.log("Valid user");
+	} else {
+		navigation.navigate("Login");
+	}
 
 	const fetchProduct = () => {
 		let url = "http://makeup-api.herokuapp.com/api/v1/products.json";
@@ -25,9 +31,7 @@ export default function Home({ navigation }) {
 		fetch(url)
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				setProducts(data);
-				console.log("set results", typeof results);
 			})
 			.catch((e) => {
 				Alert.alert("Error", e.message);
@@ -70,25 +74,14 @@ export default function Home({ navigation }) {
 					/>
 				)}
 			/>
+
+			<Button
+				title="+"
+				buttonStyle={styles.addBtn}
+				onPress={() => navigation.navigate("AddItem", { userId: userId.uid })}
+			/>
+
 			<Button title="Logout" onPress={handleLogout} type="clear" />
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	input: {
-		margin: 10,
-		width: "100%",
-		padding: 10,
-	},
-	list: {
-		width: "100%",
-		margin: 10,
-	},
-});
