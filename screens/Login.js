@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Alert } from "react-native";
 import { Button, Input } from "react-native-elements";
-import Firebase from "../config/Firebase";
+import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
 
 export default function Login({ navigation }) {
@@ -13,7 +13,8 @@ export default function Login({ navigation }) {
 		setLoading(true);
 		!email || !password
 			? Alert.alert("Please input email and password")
-			: Firebase.auth()
+			: firebase
+					.auth()
 					.signInWithEmailAndPassword(email, password)
 					.then(() => navigation.navigate("Home"))
 					.catch((error) => Alert.alert("Error", error.message));

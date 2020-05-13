@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Alert } from "react-native";
 import { Button, Input } from "react-native-elements";
-import Firebase from "../config/Firebase";
+import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
 
 export default function Signup({ navigation }) {
@@ -12,7 +12,8 @@ export default function Signup({ navigation }) {
 	const handleSignUp = () => {
 		!email || !password
 			? Alert.alert("Please input email and password to proceed")
-			: Firebase.auth()
+			: firebase
+					.auth()
 					.createUserWithEmailAndPassword(email, password)
 					.then(() => {
 						Alert.alert("You have successfully created an account.");

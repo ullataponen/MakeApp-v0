@@ -8,6 +8,16 @@ import Signup from "./screens/Signup";
 import Home from "./screens/Home";
 import AddItem from "./screens/AddItem";
 import Photo from "./screens/Camera";
+import { decode, encode } from "base-64";
+
+// to avoid atob error with firebase: https://stackoverflow.com/questions/60361519/cant-find-a-variable-atob
+// if (!global.btoa) {
+// 	global.btoa = encode;
+// }
+
+// if (!global.atob) {
+// 	global.atob = decode;
+// }
 
 const RootStack = createStackNavigator();
 

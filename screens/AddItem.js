@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Keyboard, View, ScrollView, Image } from "react-native";
 import { Input, Button } from "react-native-elements";
-import Firebase from "../config/Firebase";
+import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -9,12 +9,12 @@ import moment from "moment";
 export default function AddItem({ route, navigation }) {
 	const { userId } = route.params;
 	const { address } = route.params;
-	let purchDate = "";
-	const [openingDate, setOpenDate] = useState({
-		dd: null,
-		mm: null,
-		yyyy: null,
-	});
+	// let purchDate = "";
+	// const [openingDate, setOpenDate] = useState({
+	// 	dd: null,
+	// 	mm: null,
+	// 	yyyy: null,
+	// });
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
 	const [product, setProduct] = useState({
@@ -28,6 +28,7 @@ export default function AddItem({ route, navigation }) {
 		purchaseDate: "",
 		openDate: "",
 		expDate: "",
+		isFinished: false,
 	});
 
 	useEffect(() => {
@@ -43,40 +44,25 @@ export default function AddItem({ route, navigation }) {
 		setDatePickerVisibility(false);
 	};
 
-	const getFormattedDate = (date) => {
-		if (!date) {
-			return "";
-		} else {
-			const myDate = new Date(date);
-			const year = myDate.getFullYear();
-			const month = (1 + myDate.getMonth()).toString().padStart(2, "0");
-			const day = myDate.getDate().toString().padStart(2, "0");
-			return day + "/" + month + "/" + year;
-		}
-	};
-
 	const calculateExpiration = (pao) => {
 		const validity = Number(pao);
 		setProduct({
 			...product,
-			expDate: moment(product.openDate).add(validity, "M"),
+			expDate: new Date(moment(product.openDate).add(validity, "M")),
 		});
 	};
 
-	const saveItem = () => {
+	const saveNewItem = () => {
 		console.log(product);
-		// setProduct({
-		// 	...product,
-		// 	// purchaseDate: String(product.purchaseDate),
-		// 	// openDate: String(product.openDate),
-		// 	// expDate: String(product.expDate),
-		// });
-		console.log(
-			typeof product.purchaseDate,
-			typeof product.openDate,
-			typeof product.expDate
-		);
-		//Firebase.database().ref("products/").push({ product: product });
+		setProduct({
+			...product,
+			purchaseDate: firebase.firestore.Timestamp.fromDate(product.purchaseDate),
+			openDate: firebase.firestore.Timestamp.fromDate(product.openDate),
+			expDate: firebase.firestore.Timestamp.fromDate(product.expDate),
+		});
+		console.log("Timestamp", product);
+		const db = firebase.firestore();
+		db.collection("products").add({ product: product });
 	};
 
 	return (
@@ -128,11 +114,11 @@ export default function AddItem({ route, navigation }) {
 			/>
 			<Input
 				label="Purchase Date"
-				//value={getFormattedDate(product.purchaseDate)}
 				value={
 					product.purchaseDate
 						? moment(product.purchaseDate).format("DD/MM/YYYY")
-						: ""
+						: //String(product.purchaseDate)
+						  ""
 				}
 				//value={moment(product.purchaseDate).format("DD/MM/YYYY")}
 				onFocus={showDatePicker}
@@ -140,9 +126,11 @@ export default function AddItem({ route, navigation }) {
 			/>
 			<Input
 				label="Opening Date"
-				//value={getFormattedDate(product.openDate)}
 				value={
-					product.openDate ? moment(product.openDate).format("DD/MM/YYYY") : ""
+					product.openDate
+						? moment(product.openDate).format("DD/MM/YYYY")
+						: // String(product.openDate)
+						  ""
 				}
 				//value={moment(product.openDate).format("DD/MM/YYYY")}
 				onFocus={showDatePicker}
@@ -177,56 +165,15 @@ export default function AddItem({ route, navigation }) {
 			<Input
 				label="Expiration date"
 				value={
-					product.expDate ? moment(product.expDate).format("DD/MM/YYYY") : ""
+					product.expDate
+						? moment(product.expDate).format("DD/MM/YYYY")
+						: //  String(product.expDate)
+						  ""
 				}
 				leftIcon={{ type: "font-awesome", name: "calendar", color: "#000" }}
 				onChangeText={(date) => setProduct({ ...product, expDate: date })}
 			/>
-			<Button title="Add product" onPress={saveItem} />
+			<Button title="Add product" onPress={saveNewItem} />
 		</ScrollView>
 	);
-}
-
-{
-	/* <Text>Opening Date</Text>
-			<View
-				style={{
-					flexDirection: "row",
-					justifyContent: "space-between",
-					alignItems: "center",
-					width: "80%",
-					margin: 20,
-				}}
-			>
-				<Input
-					keyboardType="numeric"
-					containerStyle={{ width: 60 }}
-					label="DD"
-					value={openingDate.dd}
-					onChangeText={(d) => setOpenDate({ ...openingDate, dd: d })}
-				/>
-				<Text> / </Text>
-				<Input
-					keyboardType="numeric"
-					containerStyle={{ width: 60 }}
-					label="MM"
-					value={openingDate.mm}
-					onChangeText={(m) => setOpenDate({ ...openingDate, mm: m })}
-				/>
-				<Text> / </Text>
-				<Input
-					keyboardType="numeric"
-					containerStyle={{ width: 60 }}
-					label="YYYY"
-					value={openingDate.yyyy}
-					onChangeText={(y) => setOpenDate({ ...openingDate, yyyy: y })}
-				/>
-				<Button
-					title="Set"
-					onPress={() => {
-						console.log("set button", openingDate);
-						inputDate(openingDate);
-					}}
-				/> 
-			</View>*/
 }

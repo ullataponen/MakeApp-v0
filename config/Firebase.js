@@ -1,4 +1,8 @@
+window.addEventListener = (x) => x; // to avoid eventlistener error: https://stackoverflow.com/questions/61429599/error-cloud-firestore-addeventlistener-is-not-a-function-react-native-firestor
+
 import firebase from "firebase";
+import firestore from "firebase/firestore";
+
 import {
 	API_KEY,
 	AUTH_DOMAIN,
@@ -19,6 +23,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const Firebase = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
-export default Firebase;
+firebase.firestore();
+
+export default firebase;

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Alert, FlatList } from "react-native";
 import { Input, Button, ListItem } from "react-native-elements";
-import Firebase from "../config/Firebase";
+import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
 
 export default function Home({ navigation }) {
 	const [brand, setBrand] = useState("");
 	const [prodType, setProdType] = useState("");
 	const [products, setProducts] = useState([]);
-	const userId = Firebase.auth().currentUser;
+	const userId = firebase.auth().currentUser;
 
 	if (userId) {
 		console.log("Valid user");
@@ -39,7 +39,7 @@ export default function Home({ navigation }) {
 	};
 
 	const handleLogout = () => {
-		Firebase.auth().signOut();
+		firebase.auth().signOut();
 		navigation.navigate("Login");
 	};
 
