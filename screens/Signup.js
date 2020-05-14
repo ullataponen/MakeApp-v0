@@ -17,6 +17,10 @@ export default function Signup({ navigation }) {
 					.createUserWithEmailAndPassword(email, password)
 					.then(() => {
 						Alert.alert("You have successfully created an account.");
+						const db = firebase.firestore();
+						db.collection("users").add({
+							user: { name: name, email: email, password: password },
+						});
 						navigation.navigate("Home");
 					})
 					.catch((error) => console.log(error));
@@ -43,7 +47,12 @@ export default function Signup({ navigation }) {
 				leftIcon={{ type: "font-awesome", name: "lock", color: "#bbb" }}
 				secureTextEntry={true}
 			/>
-			<Button title="SIGN UP" raised onPress={handleSignUp} />
+			<Button
+				title="SIGN UP"
+				raised
+				onPress={handleSignUp}
+				buttonStyle={styles.actionBtn}
+			/>
 		</View>
 	);
 }

@@ -4,7 +4,7 @@ import { Button } from "react-native-elements";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
 
-export default function Photo({ route, navigation }) {
+export default function Photo({ navigation }) {
 	const [hasCameraPermission, setPermission] = useState(null);
 	const [photoName, setPhotoName] = useState("");
 	const [photoBase64, setPhotoBase64] = useState("");

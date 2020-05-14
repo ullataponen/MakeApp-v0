@@ -1,6 +1,13 @@
+//Fixing a Firebase warning with timer: https://github.com/firebase/firebase-js-sdk/issues/97
+// To sort this out you need to hard code the value, increase the value of the variable MAX_TIMER_DURATION_MS. Here are the steps:
+// Go to node_modules/react-native/Libraries/Core/Timer/JSTimers.js
+// Look for the variable MAX_TIMER_DURATION_MS
+// Change 60 * 1000 to 10000 * 1000
+// Save the changes and re-build your app.
+// This worked for me.
+// https://stackoverflow.com/a/46678121
+
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { Input, Button, ListItem } from "react-native-elements";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screens/Login";
@@ -8,47 +15,78 @@ import Signup from "./screens/Signup";
 import Home from "./screens/Home";
 import AddItem from "./screens/AddItem";
 import Photo from "./screens/Camera";
+import ViewItem from "./screens/ViewItem";
+import styles from "./stylesheets/style";
+
 import { decode, encode } from "base-64";
 
 // to avoid atob error with firebase: https://stackoverflow.com/questions/60361519/cant-find-a-variable-atob
-// if (!global.btoa) {
-// 	global.btoa = encode;
-// }
+if (!global.btoa) {
+	global.btoa = encode;
+}
 
-// if (!global.atob) {
-// 	global.atob = decode;
-// }
+if (!global.atob) {
+	global.atob = decode;
+}
 
 const RootStack = createStackNavigator();
 
-export default function App() {
+export default function App(props) {
+	const setHeader = (title) => {
+		const headerSt = {
+			headerTitle: title,
+			headerStyle: styles.header,
+			headerTintColor: "#fff",
+		};
+		return headerSt;
+	};
+
 	return (
 		<NavigationContainer>
 			<RootStack.Navigator initialRouteName="Login">
-				<RootStack.Screen name="Login" component={Login} />
-				<RootStack.Screen name="Signup" component={Signup} />
+				<RootStack.Screen
+					name="Login"
+					component={Login}
+					options={() => setHeader("Login")}
+				/>
+				<RootStack.Screen
+					name="Signup"
+					component={Signup}
+					options={() => setHeader("Signup")}
+				/>
 				<RootStack.Screen
 					name="Home"
 					component={Home}
-					options={{
-						headerTitle: "MakeApp Home",
-						headerStyle: {
-							backgroundColor: "#000",
-						},
-						headerTintColor: "#fff",
-						headerLeft: () => (
+					options={() => setHeader("Home")}
+				/>
+				<RootStack.Screen
+					name="AddItem"
+					component={AddItem}
+					options={() => setHeader("Add New Item")}
+				/>
+				<RootStack.Screen
+					name="Photo"
+					component={Photo}
+					options={() => setHeader("Take Photo")}
+				/>
+				<RootStack.Screen
+					name="ViewItem"
+					component={ViewItem}
+					options={() => setHeader("View Item Details")}
+				/>
+			</RootStack.Navigator>
+		</NavigationContainer>
+	);
+}
+{
+	/* headerLeft: () => (
 							<Button
-								onPress={() => alert("This is a button!")}
+								onPress={() => {
+									navigation.openDrawer();
+								}}
 								icon={{ name: "menu", color: "#fff" }}
 								color="#fff"
 								buttonStyle={{ backgroundColor: "#000" }}
 							/>
-						),
-					}}
-				/>
-				<RootStack.Screen name="AddItem" component={AddItem} />
-				<RootStack.Screen name="Photo" component={Photo} />
-			</RootStack.Navigator>
-		</NavigationContainer>
-	);
+						), */
 }

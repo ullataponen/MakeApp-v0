@@ -9,12 +9,6 @@ import moment from "moment";
 export default function AddItem({ route, navigation }) {
 	const { userId } = route.params;
 	const { address } = route.params;
-	// let purchDate = "";
-	// const [openingDate, setOpenDate] = useState({
-	// 	dd: null,
-	// 	mm: null,
-	// 	yyyy: null,
-	// });
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
 	const [product, setProduct] = useState({
@@ -54,19 +48,49 @@ export default function AddItem({ route, navigation }) {
 
 	const saveNewItem = () => {
 		console.log(product);
-		setProduct({
-			...product,
-			purchaseDate: firebase.firestore.Timestamp.fromDate(product.purchaseDate),
-			openDate: firebase.firestore.Timestamp.fromDate(product.openDate),
-			expDate: firebase.firestore.Timestamp.fromDate(product.expDate),
-		});
+		if (product.purchaseDate) {
+			setProduct({
+				...product,
+				purchaseDate: firebase.firestore.Timestamp.fromDate(
+					product.purchaseDate
+				),
+			});
+		}
+		if (product.openDate) {
+			setProduct({
+				...product,
+				openDate: firebase.firestore.Timestamp.fromDate(product.openDate),
+			});
+		}
+		if (product.expDate) {
+			setProduct({
+				...product,
+				expDate: firebase.firestore.Timestamp.fromDate(product.expDate),
+			});
+		}
+
 		console.log("Timestamp", product);
 		const db = firebase.firestore();
-		db.collection("products").add({ product: product });
+		db.collection("products").add({
+			userId: product.userId,
+			name: product.name,
+			brand: product.brand,
+			prodType: product.prodType,
+			color: product.color,
+			photo: product.photo,
+			price: product.price,
+			purchaseDate: product.purchaseDate,
+			openDate: product.openDate,
+			expDate: product.expDate,
+			isFinished: product.isFinished,
+		});
+		setTimeout(() => {
+			navigation.navigate("Main");
+		}, 2000);
 	};
 
 	return (
-		<ScrollView>
+		<ScrollView style={styles.inputContainer}>
 			<Input
 				label="Product name"
 				value={product.name}
@@ -88,6 +112,7 @@ export default function AddItem({ route, navigation }) {
 				onChangeText={(c) => setProduct({ ...product, color: c })}
 			/>
 			<Button
+				buttonStyle={styles.actionBtn}
 				title="Take a photo"
 				onPress={() => navigation.navigate("Photo")}
 			/>
@@ -173,7 +198,11 @@ export default function AddItem({ route, navigation }) {
 				leftIcon={{ type: "font-awesome", name: "calendar", color: "#000" }}
 				onChangeText={(date) => setProduct({ ...product, expDate: date })}
 			/>
-			<Button title="Add product" onPress={saveNewItem} />
+			<Button
+				title="Add product"
+				onPress={saveNewItem}
+				buttonStyle={styles.actionBtn}
+			/>
 		</ScrollView>
 	);
 }

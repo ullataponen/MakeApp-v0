@@ -27,6 +27,7 @@ export default function Login({ navigation }) {
 				style={styles.input}
 				value={email}
 				onChangeText={(e) => setEmail(e)}
+				leftIcon={{ type: "font-awesome", name: "envelope", color: "#bbb" }}
 			/>
 			<Input
 				label="Password"
@@ -34,10 +35,18 @@ export default function Login({ navigation }) {
 				value={password}
 				onChangeText={(p) => setPassword(p)}
 				secureTextEntry={true}
+				leftIcon={{ type: "font-awesome", name: "lock", color: "#bbb" }}
 			/>
-			<Button title="LOGIN" raised onPress={handleLogin} loading={loading} />
+			<Button
+				buttonStyle={styles.actionBtn}
+				title="LOGIN"
+				raised
+				onPress={handleLogin}
+				loading={loading}
+			/>
 
 			<Button
+				titleStyle={styles.textBtn}
 				title="Don't have an account yet? Sign up"
 				type="clear"
 				onPress={() => navigation.navigate("Signup")}
