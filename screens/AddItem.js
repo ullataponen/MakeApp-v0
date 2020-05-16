@@ -69,7 +69,6 @@ export default function AddItem({ route, navigation }) {
 			});
 		}
 
-		console.log("Timestamp", product);
 		const db = firebase.firestore();
 		db.collection("products").add({
 			userId: product.userId,
@@ -142,22 +141,16 @@ export default function AddItem({ route, navigation }) {
 				value={
 					product.purchaseDate
 						? moment(product.purchaseDate).format("DD/MM/YYYY")
-						: //String(product.purchaseDate)
-						  ""
+						: ""
 				}
-				//value={moment(product.purchaseDate).format("DD/MM/YYYY")}
 				onFocus={showDatePicker}
 				leftIcon={{ type: "font-awesome", name: "calendar", color: "#000" }}
 			/>
 			<Input
 				label="Opening Date"
 				value={
-					product.openDate
-						? moment(product.openDate).format("DD/MM/YYYY")
-						: // String(product.openDate)
-						  ""
+					product.openDate ? moment(product.openDate).format("DD/MM/YYYY") : ""
 				}
-				//value={moment(product.openDate).format("DD/MM/YYYY")}
 				onFocus={showDatePicker}
 				leftIcon={{ type: "font-awesome", name: "calendar", color: "#000" }}
 			/>
@@ -190,10 +183,7 @@ export default function AddItem({ route, navigation }) {
 			<Input
 				label="Expiration date"
 				value={
-					product.expDate
-						? moment(product.expDate).format("DD/MM/YYYY")
-						: //  String(product.expDate)
-						  ""
+					product.expDate ? moment(product.expDate).format("DD/MM/YYYY") : ""
 				}
 				leftIcon={{ type: "font-awesome", name: "calendar", color: "#000" }}
 				onChangeText={(date) => setProduct({ ...product, expDate: date })}

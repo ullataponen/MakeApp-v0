@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, FlatList } from "react-native";
+import React from "react";
+import { View, Text } from "react-native";
 import { Card, Button } from "react-native-elements";
-import firebase from "../config/Firebase";
 import moment from "moment";
 import styles from "../stylesheets/style";
 
@@ -38,7 +37,7 @@ export default function ViewItem({ route, navigation }) {
 					<Text style={styles.cardText}>Purchase date:</Text>
 					<Text style={styles.cardText}>
 						{product.purchaseDate
-							? moment(product.purchaseDate.toDate()).format("DD/MM/YYYY")
+							? moment(product.purchaseDate).format("DD/MM/YYYY")
 							: ""}
 					</Text>
 				</View>
@@ -46,7 +45,7 @@ export default function ViewItem({ route, navigation }) {
 					<Text style={styles.cardText}>Opening date:</Text>
 					<Text style={styles.cardText}>
 						{product.openDate
-							? moment(product.openDate.toDate()).format("DD/MM/YYYY")
+							? moment(product.openDate).format("DD/MM/YYYY")
 							: ""}
 					</Text>
 				</View>
@@ -54,11 +53,19 @@ export default function ViewItem({ route, navigation }) {
 					<Text style={styles.cardText}>Expiration date:</Text>
 					<Text style={styles.cardText}>
 						{product.expDate
-							? moment(product.expDate.toDate()).format("DD/MM/YYYY")
+							? moment(product.expDate).format("DD/MM/YYYY")
 							: ""}
 					</Text>
 					{/* <Image resizeMode="cover" source={require(product.photo)} /> */}
 				</View>
+				<Button
+					title="Edit"
+					buttonStyle={styles.actionBtn}
+					onPress={() => {
+						console.log(product);
+						navigation.navigate("EditItem", { product: product });
+					}}
+				/>
 			</Card>
 		</View>
 	);

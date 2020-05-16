@@ -16,6 +16,7 @@ import Home from "./screens/Home";
 import AddItem from "./screens/AddItem";
 import Photo from "./screens/Camera";
 import ViewItem from "./screens/ViewItem";
+import EditItem from "./screens/EditItem";
 import styles from "./stylesheets/style";
 
 import { decode, encode } from "base-64";
@@ -73,6 +74,11 @@ export default function App(props) {
 					name="ViewItem"
 					component={ViewItem}
 					options={() => setHeader("View Item Details")}
+				/>
+				<RootStack.Screen
+					name="EditItem"
+					component={EditItem}
+					options={() => setHeader("Edit Item Details")}
 				/>
 			</RootStack.Navigator>
 		</NavigationContainer>
