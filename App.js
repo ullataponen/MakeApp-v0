@@ -13,31 +13,58 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screens/Login";
 import Signup from "./screens/Signup";
 import Home from "./screens/Home";
+import SearchInAPI from "./screens/SearchInAPI";
 import AddItem from "./screens/AddItem";
+import AddApiItem from "./screens/AddApiItem";
 import Photo from "./screens/Camera";
 import ViewItem from "./screens/ViewItem";
 import EditItem from "./screens/EditItem";
+import Logout from "./screens/Logout";
+import { View, Text, FlatList, Alert } from "react-native";
+import { Button, ListItem } from "react-native-elements";
+import firebase from "./config/Firebase";
 import styles from "./stylesheets/style";
-
 import { decode, encode } from "base-64";
 
 // to avoid atob error with firebase: https://stackoverflow.com/questions/60361519/cant-find-a-variable-atob
 if (!global.btoa) {
 	global.btoa = encode;
 }
-
 if (!global.atob) {
 	global.atob = decode;
 }
 
 const RootStack = createStackNavigator();
 
-export default function App(props) {
+// function Logout({ navigation }) {
+// 	return (
+// 		<View container={styles.container}>
+// 			<Text>Do you want to log out?</Text>
+// 			<Button
+// 				title="Log out"
+// 				onPress={() => {
+// 					firebase.auth().signOut();
+// 					navigation.navigate("Login");
+// 				}}
+// 			/>
+// 			<Button title="cancel" onPress={() => navigation.navigate("Home")} />
+// 		</View>
+// 	);
+// }
+
+export default function App() {
 	const setHeader = (title) => {
 		const headerSt = {
 			headerTitle: title,
 			headerStyle: styles.header,
 			headerTintColor: "#fff",
+			// headerRight: () => (
+			// 	<Button
+			// 		title="Logout"
+			// 		buttonStyle={styles.logout}
+			// 		onPress={() => Logout()}
+			// 	/>
+			// ),
 		};
 		return headerSt;
 	};
@@ -58,12 +85,23 @@ export default function App(props) {
 				<RootStack.Screen
 					name="Home"
 					component={Home}
+					options={{ headerShown: false }}
 					options={() => setHeader("Home")}
+				/>
+				<RootStack.Screen
+					name="SearchInApi"
+					component={SearchInAPI}
+					options={() => setHeader("Search product in online DB")}
 				/>
 				<RootStack.Screen
 					name="AddItem"
 					component={AddItem}
 					options={() => setHeader("Add New Item")}
+				/>
+				<RootStack.Screen
+					name="AddApiItem"
+					component={AddApiItem}
+					options={() => setHeader("Add New Item from Online DB")}
 				/>
 				<RootStack.Screen
 					name="Photo"
@@ -79,6 +117,11 @@ export default function App(props) {
 					name="EditItem"
 					component={EditItem}
 					options={() => setHeader("Edit Item Details")}
+				/>
+				<RootStack.Screen
+					name="Logout"
+					component={Logout}
+					options={() => setHeader("Log Out")}
 				/>
 			</RootStack.Navigator>
 		</NavigationContainer>

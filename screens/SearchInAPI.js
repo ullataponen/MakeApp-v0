@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { View, FlatList } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { Input, Button, ListItem } from "react-native-elements";
 import styles from "../stylesheets/style";
 
-export default function SearchInAPI({ navigation }) {
+export default function SearchInAPI({ route, navigation }) {
+	const { userId } = route.params;
 	const [brand, setBrand] = useState("");
 	const [prodType, setProdType] = useState("");
 	const [products, setProducts] = useState([]);
@@ -31,7 +32,7 @@ export default function SearchInAPI({ navigation }) {
 	};
 
 	return (
-		<View>
+		<View style={styles.container}>
 			<View style={styles.input}>
 				<Input
 					placeholder="Search by brand"
@@ -43,7 +44,19 @@ export default function SearchInAPI({ navigation }) {
 					value={prodType}
 					onChangeText={(v) => setProdType(v)}
 				/>
-				<Button title="Search" onPress={fetchProduct} />
+				<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+					<Button
+						title="Search"
+						buttonStyle={styles.actionBtn}
+						onPress={fetchProduct}
+					/>
+					<Button
+						title="Add manually"
+						buttonStyle={styles.actionBtnInvert}
+						titleStyle={styles.actionBtnInvertText}
+						onPress={() => navigation.navigate("AddItem", { userId: userId })}
+					/>
+				</View>
 			</View>
 			<FlatList
 				style={styles.list}
@@ -55,6 +68,12 @@ export default function SearchInAPI({ navigation }) {
 						subtitle={item.brand}
 						rightSubtitle={item.product_type}
 						leftAvatar={{ source: { uri: item.image_link } }}
+						onPress={() =>
+							navigation.navigate("AddApiItem", {
+								userId: userId,
+								item: item,
+							})
+						}
 						//containerStyle={styles.listItem}
 						bottomDivider
 					/>

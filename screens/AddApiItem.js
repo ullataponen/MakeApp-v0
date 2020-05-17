@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Keyboard, View, ScrollView, Image } from "react-native";
+import { Keyboard, View, ScrollView, Image, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
+import { Picker } from "@react-native-community/picker";
 
 export default function AddItem({ route, navigation }) {
-	const { userId } = route.params;
-	const { address } = route.params;
+	const { userId, item } = route.params;
 	const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
 	const [product, setProduct] = useState({
 		userId: userId,
-		name: "",
-		brand: "",
-		prodType: "",
+		name: item.name,
+		brand: item.brand,
+		prodType: item.product_type,
 		color: "",
-		photo: "",
+		photo: item.image_link,
 		price: null,
 		purchaseDate: "",
 		openDate: "",
 		expDate: "",
 		isFinished: false,
 	});
-
-	useEffect(() => {
-		setProduct({ ...product, photo: address ? address : "" });
-	}, [address]);
 
 	const showDatePicker = () => {
 		Keyboard.dismiss();
@@ -84,8 +80,7 @@ export default function AddItem({ route, navigation }) {
 			isFinished: product.isFinished,
 		});
 		setTimeout(() => {
-			navigation.navigate("Home", { productName: product.name, action: "Add" });
-			console.log(product.name);
+			navigation.navigate("Home");
 		}, 2000);
 	};
 
@@ -106,30 +101,41 @@ export default function AddItem({ route, navigation }) {
 				value={product.prodType}
 				onChangeText={(p) => setProduct({ ...product, prodType: p })}
 			/>
-			<Input
-				label="Color"
-				value={product.color}
-				onChangeText={(c) => setProduct({ ...product, color: c })}
-			/>
-			<Button
-				buttonStyle={styles.actionBtn}
-				title="Take a photo"
-				onPress={() => navigation.navigate("Photo")}
-			/>
 			<View>
-				{address ? (
-					<Image
-						style={{
-							height: 100,
-							width: 100,
-							borderRadius: 100 / 2,
-							margin: 10,
+				<Text>Color</Text>
+				{product.color ? (
+					<Picker
+						//style={styles.picker}
+						selectedValue={product.color}
+						onValueChange={(itemValue, itemIndex) => {
+							console.log(itemValue, itemIndex);
+							setProduct({ ...product, color: itemValue });
 						}}
-						source={{ uri: address }}
-					/>
+					>
+						{item.product_colors.map((c) => {
+							return (
+								<Picker.Item
+									key={c.hex_name + c.colour_name}
+									label={c.colour_name}
+									value={c.colour_name}
+								/>
+							);
+						})}
+					</Picker>
 				) : (
-					<View></View>
+					<Text>Color not available</Text>
 				)}
+			</View>
+			<View>
+				<Image
+					style={{
+						height: 100,
+						width: 100,
+						borderRadius: 100 / 2,
+						margin: 10,
+					}}
+					source={{ uri: item.image_link }}
+				/>
 			</View>
 			<Input
 				label="Price"

@@ -1,60 +1,21 @@
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import React, { useState, useEffect } from "react";
+import { View, Text, FlatList, Alert } from "react-native";
+import { Button, ListItem } from "react-native-elements";
 import firebase from "../config/Firebase";
-import ShowProducts from "./ShowProducts";
-import SearchInAPI from "./SearchInAPI";
+import styles from "../stylesheets/style";
 
-const Drawer = createDrawerNavigator();
-
-// function AddButton() {
-// 	return (
-// 		<View style={styles.container}>
-// 			<View style={styles.addBtnContainer}>
-// 				<Button
-// 					title="+"
-// 					buttonStyle={styles.addBtn}
-// 					onPress={() => navigation.navigate("AddItem", { userId: userId.uid })}
-// 				/>
-// 			</View>
-// 		</View>
-// 	);
-// }
-
-async function Logout({ navigation }) {
-	try {
-		await firebase.auth().signOut();
-		navigation.navigate("Login");
-		// return (
-		// 	<View style={styles.container}>
-		// 		<Text>Logging out...</Text>
-		// 	</View>
-		// );
-	} catch (e) {
-		console.log(e.message);
-	}
-	return (
-		<View>
-			<Text>Logging out</Text>
-		</View>
-	);
-}
-
-export default function Home({ navigation }) {
+export default function Home({ route, navigation }) {
+	let productName = route.params ? route.params.productName : "";
+	let action = route.params ? route.params.action : "";
 	const userId = firebase.auth().currentUser;
-
-	// React.useLayoutEffect(() => {
-	// 	navigation.setOptions({
-	// 		headerLeft: () => (
-	// 			<Button
-	// 				onPress={navigation.openDrawer}
-	// 				icon={{ name: "menu", color: "#fff" }}
-	// 				color="#fff"
-	// 				buttonStyle={{ backgroundColor: "#0B0014" }}
-	// 			/>
-	// 		),
-	// 	});
-	// });
+	const [products, setProducts] = useState([]);
+	const [product, setProduct] = useState({
+		name: productName,
+		action: action,
+		// name: "",
+		// action: "",
+	});
+	//setProduct({ name: productName, action: action });
 
 	if (userId) {
 		console.log("Valid user");
@@ -62,36 +23,129 @@ export default function Home({ navigation }) {
 		navigation.navigate("Login");
 	}
 
+	//if (productName && action) {
+	console.log(productName, action, "Product", product);
+	//}
+
+	//const getDataFromDB = () => {
+	useEffect(() => {
+		console.log("fetching data");
+		fetchData();
+	}, []);
+	//};
+
+	const fetchData = async () => {
+		const db = firebase.firestore();
+		const data = await db.collection("products").get();
+		setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+	};
+
+	const deleteItem = (item) => {
+		const db = firebase.firestore();
+		console.log(item);
+		Alert.alert("Delete product?", `Do you want to delete ${item.name}?`, [
+			{
+				text: "Yes",
+				onPress: () => {
+					console.log();
+					db.collection("products").doc(item.id).delete();
+					setProduct({ ...product, name: item.name, action: "Delete" });
+				},
+			},
+			{
+				text: "Cancel",
+				onPress: () => console.log("Cancelled"),
+				style: "cancel",
+			},
+		]);
+	};
+
 	return (
-		<Drawer.Navigator initialRouteName="Main">
-			{/* <Drawer.Screen
-				name="Home"
-				component={Home}
-				options={{
-					headerTitle: "MakeApp Home",
-					headerStyle: styles.header,
-					headerTintColor: "#fff",
-					headerLeft: () => (
-						<Button
+		<View style={styles.container}>
+			<View style={styles.addBtnContainer}>
+				<Button
+					title="Log out"
+					type="clear"
+					onPress={() => navigation.navigate("Logout")}
+					titleStyle={styles.actionBtnInvertText}
+				/>
+			</View>
+			{/* <View>
+				{product.name ? (
+					<Text>
+						Action: {product.action}, product: {product.name}
+					</Text>
+				) : (
+					<View>
+						<Text>Nothing to display</Text>
+					</View>
+				)}
+			</View> */}
+
+			<FlatList
+				style={styles.list}
+				data={products}
+				keyExtractor={(item) => item.id}
+				renderItem={({ item }) =>
+					item.photo ? (
+						<ListItem
+							title={item.name}
+							subtitle={item.brand}
+							rightSubtitle={item.prodType}
+							leftAvatar={{ source: { uri: item.photo } }}
+							containerStyle={styles.listItem}
+							titleStyle={{ color: "#000", width: "100%" }}
+							bottomDivider
 							onPress={() => {
-								navigation.openDrawer();
+								console.log(item);
+								navigation.navigate("ViewItem", { product: item });
 							}}
-							icon={{ name: "menu", color: "#fff" }}
-							color="#fff"
-							buttonStyle={{ backgroundColor: "#000" }}
+							onLongPress={() => {
+								deleteItem(item);
+							}}
 						/>
-					),
-				}}
-			/> */}
-			<Drawer.Screen name="Main" component={ShowProducts} />
-			<Drawer.Screen
-				name="Search products in online DB"
-				component={SearchInAPI}
+					) : (
+						<ListItem
+							title={item.name}
+							subtitle={item.brand}
+							rightSubtitle={item.prodType}
+							leftIcon={{ name: "image" }}
+							containerStyle={styles.listItem}
+							titleStyle={{ color: "#000", width: "100%" }}
+							bottomDivider
+							onPress={() => {
+								console.log(item);
+								navigation.navigate("ViewItem", { product: item });
+							}}
+							onLongPress={() => {
+								deleteItem(item);
+							}}
+						/>
+					)
+				}
 			/>
-			<Drawer.Screen name="Logout" component={Logout} />
-		</Drawer.Navigator>
+			<View style={styles.addBtnContainer}>
+				<Button
+					title="+"
+					buttonStyle={styles.addBtn}
+					onPress={() =>
+						navigation.navigate("SearchInApi", { userId: userId.uid })
+					}
+				/>
+			</View>
+		</View>
 	);
 }
-{
-	/* <Drawer.Screen name="Home" component={Home} /> */
-}
+
+// React.useLayoutEffect(() => {
+// 	navigation.setOptions({
+// 		headerLeft: () => (
+// 			<Button
+// 				onPress={navigation.openDrawer}
+// 				icon={{ name: "menu", color: "#fff" }}
+// 				color="#fff"
+// 				buttonStyle={{ backgroundColor: "#0B0014" }}
+// 			/>
+// 		),
+// 	});
+// });

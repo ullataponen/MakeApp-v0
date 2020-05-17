@@ -3,6 +3,7 @@ import { View, Text, Image } from "react-native";
 import { Button } from "react-native-elements";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
+import styles from "../stylesheets/style";
 
 export default function Photo({ navigation }) {
 	const [hasCameraPermission, setPermission] = useState(null);
@@ -30,12 +31,16 @@ export default function Photo({ navigation }) {
 	};
 
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={{ flex: 1, backgroundColor: "#fff" }}>
 			{hasCameraPermission ? (
 				<View style={{ flex: 1 }}>
 					<Camera style={{ flex: 2 }} ref={camera} />
 					<View>
-						<Button title="Take Photo" onPress={snap} />
+						<Button
+							title="Take Photo"
+							onPress={snap}
+							buttonStyle={styles.actionBtn}
+						/>
 					</View>
 					{photoName ? (
 						<View style={{ flex: 2 }}>
@@ -54,6 +59,7 @@ export default function Photo({ navigation }) {
 									});
 									console.log(photoName);
 								}}
+								buttonStyle={styles.actionBtn}
 							/>
 						</View>
 					) : (

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Keyboard, View, ScrollView, Image } from "react-native";
+import React, { useState } from "react";
+import { Keyboard, ScrollView } from "react-native";
 import { Input, Button } from "react-native-elements";
 import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
@@ -33,10 +33,6 @@ export default function EditItem({ route, navigation }) {
 	} else {
 		pao = "";
 	}
-
-	// useEffect(() => {
-	// 	setNewProduct({ ...product, photo: address ? address : "" });
-	// }, [address]);
 
 	const showDatePicker = () => {
 		Keyboard.dismiss();
@@ -96,7 +92,10 @@ export default function EditItem({ route, navigation }) {
 		});
 		setTimeout(() => {
 			console.log(newProduct);
-			navigation.navigate("ViewItem", { product: newProduct });
+			navigation.navigate("Home", {
+				productName: product.name,
+				action: "Edit",
+			});
 		}, 2000);
 	};
 

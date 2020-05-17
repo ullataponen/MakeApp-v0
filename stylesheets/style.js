@@ -10,15 +10,19 @@ let solidPink = "#773344", // dark pink
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: potPourri,
+		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center",
 		padding: 10,
+		position: "relative",
+	},
+	inputContainer: {
+		margin: 10,
 	},
 	cardContainer: {
 		flex: 1,
 		width: "100%",
-		justifyContent: "center",
+		//	justifyContent: "center",
 		backgroundColor: potPourri,
 	},
 	header: {
@@ -44,7 +48,7 @@ const styles = StyleSheet.create({
 		alignItems: "flex-end",
 	},
 	addBtn: {
-		backgroundColor: blackRussian,
+		backgroundColor: cabaret,
 		height: 50,
 		width: 50,
 		borderRadius: 50,
@@ -53,13 +57,27 @@ const styles = StyleSheet.create({
 		backgroundColor: cabaret,
 		paddingLeft: 20,
 		paddingRight: 20,
+		margin: 5,
+		borderWidth: 2,
+		borderColor: cabaret,
+	},
+	actionBtnInvert: {
+		backgroundColor: "#fff",
+		margin: 5,
+		borderWidth: 2,
+		borderColor: cabaret,
+		paddingLeft: 20,
+		paddingRight: 20,
+	},
+	actionBtnInvertText: {
+		color: cabaret,
 	},
 	textBtn: {
 		color: cabaret,
 	},
 	card: {
 		//backgroundColor: potPourri,
-		height: "80%",
+		//height: "80%",
 		justifyContent: "space-between",
 	},
 	cardTitle: {
@@ -72,6 +90,14 @@ const styles = StyleSheet.create({
 	},
 	cardText: {
 		fontSize: 20,
+	},
+	cardImg: {
+		width: 150,
+		height: 150,
+		margin: 20,
+	},
+	logout: {
+		backgroundColor: blackRussian,
 	},
 });
 
