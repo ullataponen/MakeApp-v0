@@ -30,14 +30,14 @@ export default function ViewItem({ route, navigation }) {
 					<Text style={styles.cardText}>Price:</Text>
 					<Text style={styles.cardText}>{product.price} €</Text>
 				</View>
-				<View style={styles.cardLine}>
+				{/* <View style={styles.cardLine}>
 					<Text style={styles.cardText}>Purchase date:</Text>
 					<Text style={styles.cardText}>
 						{product.purchaseDate
 							? moment(product.purchaseDate.toDate()).format("DD/MM/YYYY")
 							: ""}
 					</Text>
-				</View>
+				</View> */}
 				<View style={styles.cardLine}>
 					<Text style={styles.cardText}>Opening date:</Text>
 					<Text style={styles.cardText}>

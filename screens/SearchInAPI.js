@@ -8,8 +8,10 @@ export default function SearchInAPI({ route, navigation }) {
 	const [brand, setBrand] = useState("");
 	const [prodType, setProdType] = useState("");
 	const [products, setProducts] = useState([]);
+	const [text, setText] = useState("Search brand or product type");
 
 	const fetchProduct = () => {
+		setText("Searching...");
 		let url = "http://makeup-api.herokuapp.com/api/v1/products.json";
 		setBrand(brand.replace(" ", "_"));
 		setProdType(prodType.replace(" ", "_"));
@@ -25,6 +27,9 @@ export default function SearchInAPI({ route, navigation }) {
 			.then((response) => response.json())
 			.then((data) => {
 				setProducts(data);
+				if (data.length === 0) {
+					setText("Nothing found");
+				}
 			})
 			.catch((e) => {
 				Alert.alert("Error", e.message);
@@ -58,27 +63,30 @@ export default function SearchInAPI({ route, navigation }) {
 					/>
 				</View>
 			</View>
-			<FlatList
-				style={styles.list}
-				data={products}
-				keyExtractor={(item) => item.id.toString()}
-				renderItem={({ item }) => (
-					<ListItem
-						title={item.name}
-						subtitle={item.brand}
-						rightSubtitle={item.product_type}
-						leftAvatar={{ source: { uri: item.image_link } }}
-						onPress={() =>
-							navigation.navigate("AddApiItem", {
-								userId: userId,
-								item: item,
-							})
-						}
-						//containerStyle={styles.listItem}
-						bottomDivider
-					/>
-				)}
-			/>
+			{products.length === 0 ? (
+				<Text style={styles.searchText}>{text}</Text>
+			) : (
+				<FlatList
+					style={styles.list}
+					data={products}
+					keyExtractor={(item) => item.id.toString()}
+					renderItem={({ item }) => (
+						<ListItem
+							title={item.name}
+							subtitle={item.brand}
+							rightSubtitle={item.product_type}
+							leftAvatar={{ source: { uri: item.image_link } }}
+							onPress={() =>
+								navigation.navigate("AddApiItem", {
+									userId: userId,
+									item: item,
+								})
+							}
+							bottomDivider
+						/>
+					)}
+				/>
+			)}
 		</View>
 	);
 }

@@ -147,7 +147,7 @@ export default function EditItem({ route, navigation }) {
 				onChangeText={(pr) => setNewProduct({ ...newProduct, price: pr })}
 				keyboardType="numeric"
 			/>
-			<Input
+			{/* <Input
 				label="Purchase Date"
 				defaultValue={
 					product.purchaseDate
@@ -157,7 +157,7 @@ export default function EditItem({ route, navigation }) {
 				value={moment(newProduct.purchaseDate).format("DD/MM/YYYY")}
 				onFocus={showDatePicker}
 				leftIcon={{ type: "font-awesome", name: "calendar", color: "#000" }}
-			/>
+			/> */}
 			<Input
 				label="Opening Date"
 				defaultValue={
@@ -167,7 +167,7 @@ export default function EditItem({ route, navigation }) {
 				onFocus={showDatePicker}
 				leftIcon={{ type: "font-awesome", name: "calendar", color: "#000" }}
 			/>
-			<DateTimePickerModal
+			{/* <DateTimePickerModal
 				isVisible={isDatePickerVisible}
 				mode="date"
 				onConfirm={(date) => {
@@ -176,12 +176,12 @@ export default function EditItem({ route, navigation }) {
 					hideDatePicker();
 				}}
 				onCancel={hideDatePicker}
-			/>
+			/> */}
 			<DateTimePickerModal
 				isVisible={isDatePickerVisible}
 				mode="date"
 				onConfirm={(date) => {
-					//hideDatePicker();
+					hideDatePicker();
 					setNewProduct({ ...newProduct, openDate: date });
 					hideDatePicker();
 				}}

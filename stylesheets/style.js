@@ -29,11 +29,17 @@ const styles = StyleSheet.create({
 		backgroundColor: blackRussian,
 	},
 	input: {
+		//flex: 1,
 		margin: 10,
 		width: "100%",
 		padding: 10,
 	},
+	searchText: {
+		justifyContent: "center",
+		alignItems: "center",
+	},
 	list: {
+		flex: 2,
 		width: "100%",
 		margin: 10,
 	},
@@ -95,6 +101,10 @@ const styles = StyleSheet.create({
 		width: 150,
 		height: 150,
 		margin: 20,
+	},
+	buttonRow: {
+		flexDirection: "row",
+		justifyContent: "space-evenly",
 	},
 	logout: {
 		backgroundColor: blackRussian,

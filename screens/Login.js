@@ -10,14 +10,19 @@ export default function Login({ navigation }) {
 	const [loading, setLoading] = useState(false);
 
 	const handleLogin = () => {
-		setLoading(true);
-		!email || !password
-			? Alert.alert("Please input email and password")
-			: firebase
-					.auth()
-					.signInWithEmailAndPassword(email, password)
-					.then(() => navigation.navigate("Home"))
-					.catch((error) => Alert.alert("Error", error.message));
+		//	setLoading(!loading);
+		if (!email || !password) {
+			Alert.alert("Please input email and password");
+			setLoading(false);
+		} else {
+			firebase
+				.auth()
+				.signInWithEmailAndPassword(email, password)
+				.then(() => navigation.navigate("Home"))
+				.catch((error) => Alert.alert("Error", error.message));
+		}
+		setEmail("");
+		setPassword("");
 	};
 
 	return (

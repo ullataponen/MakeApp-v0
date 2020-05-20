@@ -12,8 +12,6 @@ export default function Home({ route, navigation }) {
 	const [product, setProduct] = useState({
 		name: productName,
 		action: action,
-		// name: "",
-		// action: "",
 	});
 	//setProduct({ name: productName, action: action });
 
@@ -22,10 +20,6 @@ export default function Home({ route, navigation }) {
 	} else {
 		navigation.navigate("Login");
 	}
-
-	//if (productName && action) {
-	console.log(productName, action, "Product", product);
-	//}
 
 	//const getDataFromDB = () => {
 	useEffect(() => {
@@ -36,7 +30,10 @@ export default function Home({ route, navigation }) {
 
 	const fetchData = async () => {
 		const db = firebase.firestore();
-		const data = await db.collection("products").get();
+		const data = await db
+			.collection("products")
+			.where("userId", "==", userId.uid)
+			.get();
 		setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
 	};
 
@@ -70,18 +67,6 @@ export default function Home({ route, navigation }) {
 					titleStyle={styles.actionBtnInvertText}
 				/>
 			</View>
-			{/* <View>
-				{product.name ? (
-					<Text>
-						Action: {product.action}, product: {product.name}
-					</Text>
-				) : (
-					<View>
-						<Text>Nothing to display</Text>
-					</View>
-				)}
-			</View> */}
-
 			<FlatList
 				style={styles.list}
 				data={products}
