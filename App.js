@@ -85,13 +85,12 @@ export default function App() {
 				<RootStack.Screen
 					name="Home"
 					component={Home}
-					options={{ headerShown: false }}
 					options={() => setHeader("Home")}
 				/>
 				<RootStack.Screen
 					name="SearchInApi"
 					component={SearchInAPI}
-					options={() => setHeader("Search product in online DB")}
+					options={() => setHeader("Search or Add Manually")}
 				/>
 				<RootStack.Screen
 					name="AddItem"
@@ -126,16 +125,4 @@ export default function App() {
 			</RootStack.Navigator>
 		</NavigationContainer>
 	);
-}
-{
-	/* headerLeft: () => (
-							<Button
-								onPress={() => {
-									navigation.openDrawer();
-								}}
-								icon={{ name: "menu", color: "#fff" }}
-								color="#fff"
-								buttonStyle={{ backgroundColor: "#000" }}
-							/>
-						), */
 }

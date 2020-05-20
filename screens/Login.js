@@ -45,7 +45,6 @@ export default function Login({ navigation }) {
 			<Button
 				buttonStyle={styles.actionBtn}
 				title="LOGIN"
-				//raised
 				onPress={handleLogin}
 				loading={loading}
 			/>

@@ -8,19 +8,30 @@ export default function Home({ route, navigation }) {
 	let productName = route.params ? route.params.productName : "";
 	let action = route.params ? route.params.action : "";
 	const userId = firebase.auth().currentUser;
-	//const db = firebase.firestore();
 	const [products, setProducts] = useState([]);
 	const [product, setProduct] = useState({
 		name: productName,
 		action: action,
 	});
-	//setProduct({ name: productName, action: action });
 
 	if (userId) {
 		console.log("Valid user");
 	} else {
 		navigation.navigate("Login");
 	}
+
+	React.useLayoutEffect(() => {
+		navigation.setOptions({
+			headerRight: () => (
+				<Button
+					onPress={() => navigation.navigate("Logout")}
+					title="Logout"
+					buttonStyle={styles.logout}
+				/>
+			),
+			headerLeft: false,
+		});
+	}, [navigation]);
 
 	//const getDataFromDB = () => {
 	// useEffect(() => {
@@ -42,6 +53,7 @@ export default function Home({ route, navigation }) {
 		return db
 			.collection("products")
 			.where("userId", "==", userId.uid)
+			.where("isFinished", "==", false)
 			.onSnapshot((snapshot) => {
 				const productData = [];
 				snapshot.forEach((doc) =>
@@ -50,44 +62,6 @@ export default function Home({ route, navigation }) {
 				setProducts(productData);
 			});
 	}, []);
-
-	//Realtime
-	// const eventPageListener = () => {
-	// 	db.collection("products")
-	// 		.where("userId", "==", userId.uid)
-	// 		.onSnapshot((snapshot) => {
-	// 			let change = snapshot.docChanges();
-	// 			change.forEach((change) => {
-	// 				if (change.type === "added") {
-	// 					console.log(`You have added ${change.doc.data().name}`);
-	// 					//setProducts(products.concat(change.doc.data()));
-	// 					// setProducts(
-	// 					// 	products.concat({ ...change.doc.data(), id: change.doc.id })
-	// 					// );
-	// 					products.push({ ...change.doc.data(), id: change.doc.id });
-	// 					setProducts(products);
-	// 				}
-	// 				if (change.type === "modified") {
-	// 					Alert.alert(
-	// 						`You have modified ${change.doc.data().name}, ${change.doc.id}`
-	// 					);
-	// 					setProducts(products);
-	// 				}
-	// 				if (change.type === "removed") {
-	// 					Alert.alert(
-	// 						`You have deleted ${change.doc.data().name}, ${change.doc.id}`
-	// 					);
-	// 					setProducts(products.filter((p) => p.id !== change.doc.id));
-	// 				}
-	// 				// snapshot.docChanges().forEach((change) => {
-	// 				// 	if (change.type === "added") {
-	// 				// 		console.log(change.doc.data());
-	// 				// 		setProducts(products.concat(change.doc.data()));
-	// 				// 	}
-	// 				// });
-	// 			});
-	// 		});
-	// };
 
 	const deleteItem = (item) => {
 		const db = firebase.firestore();
@@ -112,12 +86,12 @@ export default function Home({ route, navigation }) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.addBtnContainer}>
-				<Button
+				{/* <Button
 					title="Log out"
 					type="clear"
 					onPress={() => navigation.navigate("Logout")}
 					titleStyle={styles.actionBtnInvertText}
-				/>
+				/> */}
 			</View>
 			<FlatList
 				style={styles.list}
@@ -173,16 +147,3 @@ export default function Home({ route, navigation }) {
 		</View>
 	);
 }
-
-// React.useLayoutEffect(() => {
-// 	navigation.setOptions({
-// 		headerLeft: () => (
-// 			<Button
-// 				onPress={navigation.openDrawer}
-// 				icon={{ name: "menu", color: "#fff" }}
-// 				color="#fff"
-// 				buttonStyle={{ backgroundColor: "#0B0014" }}
-// 			/>
-// 		),
-// 	});
-// });

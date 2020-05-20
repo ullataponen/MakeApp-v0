@@ -19,7 +19,7 @@ export default function AddItem({ route, navigation }) {
 		color: "",
 		photo: "",
 		price: null,
-		purchaseDate: "",
+		purchaseDate: new Date(),
 		openDate: "",
 		expDate: "",
 		isFinished: false,

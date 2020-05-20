@@ -52,6 +52,12 @@ export default function EditItem({ route, navigation }) {
 		});
 	};
 
+	const markFinished = () => {
+		console.log(newProduct.isFinished);
+		setNewProduct({ ...newProduct, isFinished: true });
+		//	updateItem();
+	};
+
 	const updateItem = () => {
 		console.log(newProduct);
 		if (newProduct.purchaseDate) {
@@ -75,7 +81,6 @@ export default function EditItem({ route, navigation }) {
 			});
 		}
 
-		//	console.log("Timestamp", newProduct);
 		const db = firebase.firestore();
 		db.collection("products").doc(newProduct.id).set({
 			userId: newProduct.userId,
@@ -203,17 +208,16 @@ export default function EditItem({ route, navigation }) {
 				onChangeText={(date) => setNewProduct({ ...newProduct, expDate: date })}
 			/>
 			<Button
+				title="Mark as finished"
+				onPress={markFinished}
+				buttonStyle={styles.actionBtnInvert}
+				titleStyle={styles.actionBtnInvertText}
+			/>
+			<Button
 				title="Update product"
 				onPress={updateItem}
 				buttonStyle={styles.actionBtn}
 			/>
 		</ScrollView>
 	);
-}
-
-{
-	/* moment(product.expDate.toDate()).diff(
-					moment(product.openDate.toDate()),
-					"months"
-				) */
 }

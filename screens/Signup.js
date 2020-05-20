@@ -66,7 +66,6 @@ export default function Signup({ navigation }) {
 			/>
 			<Button
 				title="SIGN UP"
-				//raised
 				onPress={handleSignUp}
 				buttonStyle={styles.actionBtn}
 			/>

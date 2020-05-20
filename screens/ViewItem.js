@@ -56,11 +56,7 @@ export default function ViewItem({ route, navigation }) {
 				</View>
 				<View style={{ justifyContent: "center", alignItems: "center" }}>
 					{product.photo ? (
-						<Image
-							//resizeMode="center"
-							style={styles.cardImg}
-							source={{ uri: product.photo }}
-						/>
+						<Image style={styles.cardImg} source={{ uri: product.photo }} />
 					) : (
 						<View></View>
 					)}
