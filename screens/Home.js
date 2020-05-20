@@ -8,6 +8,7 @@ export default function Home({ route, navigation }) {
 	let productName = route.params ? route.params.productName : "";
 	let action = route.params ? route.params.action : "";
 	const userId = firebase.auth().currentUser;
+	//const db = firebase.firestore();
 	const [products, setProducts] = useState([]);
 	const [product, setProduct] = useState({
 		name: productName,
@@ -22,20 +23,71 @@ export default function Home({ route, navigation }) {
 	}
 
 	//const getDataFromDB = () => {
-	useEffect(() => {
-		console.log("fetching data");
-		fetchData();
-	}, []);
-	//};
+	// useEffect(() => {
+	// 	console.log("fetching data");
+	// 	fetchData();
+	// }, []);
+	// //};
 
-	const fetchData = async () => {
+	// const fetchData = async () => {
+	// 	const data = await db
+	// 		.collection("products")
+	// 		.where("userId", "==", userId.uid)
+	// 		.get();
+	// 	setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+	// };
+
+	useEffect(() => {
 		const db = firebase.firestore();
-		const data = await db
+		return db
 			.collection("products")
 			.where("userId", "==", userId.uid)
-			.get();
-		setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-	};
+			.onSnapshot((snapshot) => {
+				const productData = [];
+				snapshot.forEach((doc) =>
+					productData.push({ ...doc.data(), id: doc.id })
+				);
+				setProducts(productData);
+			});
+	}, []);
+
+	//Realtime
+	// const eventPageListener = () => {
+	// 	db.collection("products")
+	// 		.where("userId", "==", userId.uid)
+	// 		.onSnapshot((snapshot) => {
+	// 			let change = snapshot.docChanges();
+	// 			change.forEach((change) => {
+	// 				if (change.type === "added") {
+	// 					console.log(`You have added ${change.doc.data().name}`);
+	// 					//setProducts(products.concat(change.doc.data()));
+	// 					// setProducts(
+	// 					// 	products.concat({ ...change.doc.data(), id: change.doc.id })
+	// 					// );
+	// 					products.push({ ...change.doc.data(), id: change.doc.id });
+	// 					setProducts(products);
+	// 				}
+	// 				if (change.type === "modified") {
+	// 					Alert.alert(
+	// 						`You have modified ${change.doc.data().name}, ${change.doc.id}`
+	// 					);
+	// 					setProducts(products);
+	// 				}
+	// 				if (change.type === "removed") {
+	// 					Alert.alert(
+	// 						`You have deleted ${change.doc.data().name}, ${change.doc.id}`
+	// 					);
+	// 					setProducts(products.filter((p) => p.id !== change.doc.id));
+	// 				}
+	// 				// snapshot.docChanges().forEach((change) => {
+	// 				// 	if (change.type === "added") {
+	// 				// 		console.log(change.doc.data());
+	// 				// 		setProducts(products.concat(change.doc.data()));
+	// 				// 	}
+	// 				// });
+	// 			});
+	// 		});
+	// };
 
 	const deleteItem = (item) => {
 		const db = firebase.firestore();

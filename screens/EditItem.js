@@ -143,7 +143,7 @@ export default function EditItem({ route, navigation }) {
 			</View> */}
 			<Input
 				label="Price"
-				defaultValue={product.price}
+				defaultValue={String(product.price)}
 				onChangeText={(pr) => setNewProduct({ ...newProduct, price: pr })}
 				keyboardType="numeric"
 			/>
