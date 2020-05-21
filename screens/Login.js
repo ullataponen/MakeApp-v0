@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View, Text, Alert } from "react-native";
 import { Button, Input } from "react-native-elements";
 import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
@@ -27,6 +27,7 @@ export default function Login({ navigation }) {
 
 	return (
 		<View style={styles.container}>
+			<Text style={styles.title}>MakeApp v0</Text>
 			<Input
 				label="Email"
 				style={styles.input}

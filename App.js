@@ -8,6 +8,7 @@
 // https://stackoverflow.com/a/46678121
 
 import React from "react";
+import { YellowBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Login from "./screens/Login";
@@ -20,9 +21,6 @@ import Photo from "./screens/Camera";
 import ViewItem from "./screens/ViewItem";
 import EditItem from "./screens/EditItem";
 import Logout from "./screens/Logout";
-import { View, Text, FlatList, Alert } from "react-native";
-import { Button, ListItem } from "react-native-elements";
-import firebase from "./config/Firebase";
 import styles from "./stylesheets/style";
 import { decode, encode } from "base-64";
 
@@ -34,23 +32,12 @@ if (!global.atob) {
 	global.atob = decode;
 }
 
-const RootStack = createStackNavigator();
+//Avoid the warning when sending params to ViewItem: https://reactnavigation.org/docs/troubleshooting#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
+YellowBox.ignoreWarnings([
+	"Non-serializable values were found in the navigation state",
+]);
 
-// function Logout({ navigation }) {
-// 	return (
-// 		<View container={styles.container}>
-// 			<Text>Do you want to log out?</Text>
-// 			<Button
-// 				title="Log out"
-// 				onPress={() => {
-// 					firebase.auth().signOut();
-// 					navigation.navigate("Login");
-// 				}}
-// 			/>
-// 			<Button title="cancel" onPress={() => navigation.navigate("Home")} />
-// 		</View>
-// 	);
-// }
+const RootStack = createStackNavigator();
 
 export default function App() {
 	const setHeader = (title) => {
@@ -58,13 +45,6 @@ export default function App() {
 			headerTitle: title,
 			headerStyle: styles.header,
 			headerTintColor: "#fff",
-			// headerRight: () => (
-			// 	<Button
-			// 		title="Logout"
-			// 		buttonStyle={styles.logout}
-			// 		onPress={() => Logout()}
-			// 	/>
-			// ),
 		};
 		return headerSt;
 	};
@@ -85,7 +65,7 @@ export default function App() {
 				<RootStack.Screen
 					name="Home"
 					component={Home}
-					options={() => setHeader("Home")}
+					options={() => setHeader("MakeApp Home")}
 				/>
 				<RootStack.Screen
 					name="SearchInApi"

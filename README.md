@@ -32,13 +32,13 @@ See above.
 
 ## Used technologies and components
 
-- Framework: React Native, Expo
+- Framework: React Native, [Expo](https://expo.io/)
 - Components:
-  - Authentication: Firebase authentication
-  - Database: Firebase Firestore
-  - Key management: Dotenv
-  - Styling: React Native Elements, Picker
-  - Navigation: React Navigation (Stack)
-  - Camera: Expo Camera
-  - Calendar and time management: React Native Community Datetimepicker, React Native Modal Datetime-Picker, Moment
-  - Other: Base-64 for supporting base-64 encoding-decoding with Firebase
+  - Authentication: [Google Firebase](https://firebase.google.com/) authentication
+  - Database: [Google Firebase](https://firebase.google.com/) Firestore
+  - Key management: [Dotenv](https://github.com/motdotla/dotenv)
+  - Styling: [React Native Elements](https://react-native-elements.github.io/react-native-elements/), [React Native Community Picker](https://github.com/react-native-community/react-native-picker)
+  - Navigation: [React Navigation](https://reactnavigation.org/) (Stack)
+  - Camera: [Expo Camera](https://docs.expo.io/versions/v37.0.0/sdk/camera/)
+  - Calendar and time management: [React Native Community Datetimepicker](https://github.com/react-native-community/datetimepicker), [React Native Modal Datetime-Picker](https://github.com/mmazzarolo/react-native-modal-datetime-picker), [Moment](https://momentjs.com/)
+  - Other: [Base64](https://www.npmjs.com/package/react-native-base64) for supporting base-64 encoding-decoding with Firebase

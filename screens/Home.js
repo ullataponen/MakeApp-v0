@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, Alert } from "react-native";
+import { View, FlatList, Alert } from "react-native";
 import { Button, ListItem } from "react-native-elements";
 import firebase from "../config/Firebase";
 import styles from "../stylesheets/style";
@@ -32,21 +32,6 @@ export default function Home({ route, navigation }) {
 			headerLeft: false,
 		});
 	}, [navigation]);
-
-	//const getDataFromDB = () => {
-	// useEffect(() => {
-	// 	console.log("fetching data");
-	// 	fetchData();
-	// }, []);
-	// //};
-
-	// const fetchData = async () => {
-	// 	const data = await db
-	// 		.collection("products")
-	// 		.where("userId", "==", userId.uid)
-	// 		.get();
-	// 	setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-	// };
 
 	useEffect(() => {
 		const db = firebase.firestore();
@@ -85,14 +70,7 @@ export default function Home({ route, navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<View style={styles.addBtnContainer}>
-				{/* <Button
-					title="Log out"
-					type="clear"
-					onPress={() => navigation.navigate("Logout")}
-					titleStyle={styles.actionBtnInvertText}
-				/> */}
-			</View>
+			<View style={styles.addBtnContainer}></View>
 			<FlatList
 				style={styles.list}
 				data={products}
@@ -139,6 +117,7 @@ export default function Home({ route, navigation }) {
 				<Button
 					title="+"
 					buttonStyle={styles.addBtn}
+					raised
 					onPress={() =>
 						navigation.navigate("SearchInApi", { userId: userId.uid })
 					}

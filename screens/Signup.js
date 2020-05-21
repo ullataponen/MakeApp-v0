@@ -32,7 +32,7 @@ export default function Signup({ navigation }) {
 					});
 					navigation.navigate("Login");
 				})
-				.catch((error) => console.log(error));
+				.catch((error) => Alert.alert(error.message));
 		}
 	};
 

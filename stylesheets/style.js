@@ -28,6 +28,12 @@ const styles = StyleSheet.create({
 	header: {
 		backgroundColor: blackRussian,
 	},
+	title: {
+		color: cabaret,
+		fontSize: 30,
+		marginBottom: 30,
+		fontWeight: "600",
+	},
 	input: {
 		//flex: 1,
 		margin: 10,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Keyboard, View, ScrollView, Image, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import firebase from "../config/Firebase";

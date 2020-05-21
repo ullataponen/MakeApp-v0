@@ -13,7 +13,6 @@ export default function Photo({ navigation }) {
 	const camera = useRef(null);
 
 	useEffect(() => {
-		//console.log(product);
 		askCameraPermission();
 	}, []);
 
